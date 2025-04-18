@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Book } from '../book';
 import { CommonModule } from '@angular/common';
+import { BookService } from '../book.service';
 
 @Component({
   selector: 'app-book-list',
@@ -9,12 +10,17 @@ import { CommonModule } from '@angular/common';
   templateUrl: './book-list.component.html',
   styleUrl: './book-list.component.css'
 })
-export class BookListComponent {
+export class BookListComponent implements OnInit {
 
-  books: Book[] = [
-    { bookid: 1, title: "Book one", author: "Author one" },
-    { bookid: 2, title: "Book two", author: "Author two" },
-    { bookid: 3, title: "Book three", author: "Author three" }
-  ]
+  books: Book[] = [];
 
+  constructor(private bookService: BookService) { }
+
+  ngOnInit() {
+    this.getBooks();
+  }
+
+  getBooks() : void {
+    this.bookService.getBooks().subscribe(booksFromApi => this.books = booksFromApi);
+  }
 }
